@@ -12,32 +12,29 @@ struct ContentView: View {
     @State private var roundsWon = 0
     
     private let handOptions =   ["✊", "🖐️", "✌️"]
-    private let beatsOptions =  ["🖐️", "✌️", "✊"]
-    private let loosesOptions = ["✌️", "✊", "🖐️"]
     
     private let outcomeOptions = ["Beats", "Looses for"]
 
     @State private var challengeHand = "✊"
     @State private var challengeOutcome = "Beats"
     @State private var challengeAnswer = "🖐️"
-
     @State private var userAnswer = "🖐️"
     
     init() {
-        self.randomizeNewChallenge()
+        randomizeNewChallenge()
     }
     
     func randomizeNewChallenge() {
         let randomHand = Int.random(in: 0..<3)
         let randomOutcome = Int.random(in: 0..<2 )
          
-        self.challengeHand = handOptions[randomHand]
-        self.challengeOutcome = outcomeOptions[randomOutcome]
+        challengeHand = handOptions[randomHand]
+        challengeOutcome = outcomeOptions[randomOutcome]
 
         challengeAnswer = (randomOutcome == 0) /* win */ ?
-             beatsOptions[randomHand]  :
-             loosesOptions[randomHand]
-    }
+            handOptions[(randomHand+1)%handOptions.count] : /* circular 1 step to the right  */
+            handOptions[(randomHand+2)%handOptions.count]   /* circular 2 steps to the right */
+        }
 
     func showChallengeResults() {
         roundsPlayed += 1
